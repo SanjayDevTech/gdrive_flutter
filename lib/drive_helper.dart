@@ -196,6 +196,9 @@ class DriveHelper {
       var testAccount = await signIn.signInSilently() ?? await signIn.signIn();
       if (testAccount != null) {
         account = testAccount;
+        final authHeaders = await account.authHeaders;
+        final authClient = _GoogleAuthClient(authHeaders);
+        driveAPI = DriveApi(authClient);
         return true;
       }
       return false;
@@ -367,7 +370,6 @@ class DriveHelper {
     List<String> result = List.empty(growable: true);
 
     if (search.files!.length == 0) {
-      throw "File not found";
     } else {
       for (var file in search.files!) {
         result.add(file.id!);
