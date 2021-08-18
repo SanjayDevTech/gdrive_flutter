@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:gdrive_flutter/drive_helper.dart';
+import 'package:provider/provider.dart';
+
+import 'app.dart';
+import 'models/auth.dart';
 
 void main() {
-  runApp(GDriveApp());
-}
-
-class GDriveApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Center(child: Text('Hi'),),
-    );
-  }
+  final driveHelper = DriveHelper([DriveScopes.appData]);
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => Auth(driveHelper),
+      child: GDriveApp(),
+    ),
+  );
 }
